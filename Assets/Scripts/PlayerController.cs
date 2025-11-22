@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public GameObject thrusterPrefab;
     public GameObject shieldPrefab;
 
+    private bool hasShield = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -42,13 +44,21 @@ public class PlayerController : MonoBehaviour
         lives = 3;
         playerSpeed = 6f;
         weaponType = 1;//deafault weapon
+        shieldPrefab.SetActive(false);
         gameManager.ChangeLivesText(lives);
     }
 
     public void LoseALife()
     {
-        //do I have a shield - if so loose the shield first and not the life, by checking visibility and changing UI powerup text
-        // if not - lose a life
+        if (hasShield)
+        {
+            hasShield = false;
+            shieldPrefab.SetActive(false);
+            gameManager.ManagePowerupText(0);
+            gameManager.PlaySound(2);   
+            return; // shield takes the hit
+        }
+
         lives--;
         gameManager.ChangeLivesText(lives);
         if(lives <= 0)
@@ -91,7 +101,7 @@ public class PlayerController : MonoBehaviour
         if (whatDidIHit.tag == "Powerup")
         {
             Destroy(whatDidIHit.gameObject);
-            int whichPowerup = Random.Range(1, 4);
+            int whichPowerup = Random.Range(1, 5);
             gameManager.PlaySound(1);
             switch (whichPowerup)
             {
@@ -113,10 +123,14 @@ public class PlayerController : MonoBehaviour
                     gameManager.ManagePowerupText(3);
                     break;
                 case 4:
-                    // shield powerup do you have shield if yes do nothinh if no activate it
-                    gameManager.ManagePowerupText(4);
+                    if (!hasShield)
+                    {
+                        hasShield = true;
+                        shieldPrefab.SetActive(true); // should turn shield graphic ON
+                        gameManager.ManagePowerupText(4);
+                    }
                     break;
-               
+
 
             }
 
@@ -142,12 +156,17 @@ public class PlayerController : MonoBehaviour
         //limit the player movment on screen
         if (transform.position.x > horizontalScreenLimit || transform.position.x < -horizontalScreenLimit)
         {
-            transform.position = new Vector3(transform.position.x *-1, transform.position.y, 0);
+            transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
         }
 
-        if(transform.position.y > verticalScreenLimit || transform.position.y < -verticalScreenLimit)
+        if (transform.position.y >= 0f)
         {
-            transform.position = new Vector3(transform.position.x, -transform.position.y, 0);
+            transform.position = new Vector3(transform.position.x, -verticalScreenLimit, 0);
+        }
+        else if (transform.position.y < -verticalScreenLimit)
+        {
+
+            transform.position = new Vector3(transform.position.x, 0f, 0);
         }
     }
     //shooting

@@ -1072,6 +1072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   playerPrefab: {fileID: 3077523787957400353, guid: eb298013d18470340a27b5db8ffe815f, type: 3}
   enemyOnePrefab: {fileID: 4756244280153132846, guid: c992ae98abc36664b82cabb895b933df, type: 3}
+  enemyTwoPrefab: {fileID: 4756244280153132846, guid: ded61d63e45b936449aba93d5c053e37, type: 3}
   cloudPrefab: {fileID: 1435653855726192412, guid: 329255291130a644787911b81757334f, type: 3}
   powerupPrefab: {fileID: 4756244280153132846, guid: aa2bba41a9f56634c948b06336e16155, type: 3}
   coinPrefab: {fileID: 4232964396143084233, guid: 6dc2396bae0606d46a7a64862c8281a0, type: 3}

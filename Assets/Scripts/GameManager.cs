@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject enemyOnePrefab;
+    public GameObject enemyTwoPrefab;
     public GameObject cloudPrefab;
     public GameObject powerupPrefab;
     public GameObject coinPrefab;
@@ -39,7 +40,8 @@ public class GameManager : MonoBehaviour
         AddScore(0);
         Instantiate(playerPrefab, transform.position, Quaternion.identity);
         CreateSky();//instant, every frame
-        InvokeRepeating("CreateEnemyOne", 2f, 3f);//over time
+        InvokeRepeating("CreateEnemyOne", 2f, 3f);
+        InvokeRepeating("CreateEnemyTwo", 4f, 4f); //over time
         powerUpText.text = "No Powers yet!";
         StartCoroutine(SpawnPowerup());
         StartCoroutine(SpawnCoin());
@@ -153,6 +155,10 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(enemyOnePrefab, new Vector3(Random.Range(-8f, 8f), 6.5f, 0), Quaternion.identity);
 
+    }
+    void CreateEnemyTwo()
+    {
+        Instantiate(enemyTwoPrefab, new Vector3(10f, Random.Range(-6.5f, 6.5f), 0), Quaternion.identity);
     }
 
     public void GameOver()
